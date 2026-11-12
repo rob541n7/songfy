@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Songfy</string>
+    <string name="channel_name">Pemutar musik</string>
+    <string name="channel_desc">Kontrol lagu yang sedang diputar</string>
+</resources>

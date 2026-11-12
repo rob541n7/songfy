@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121212">
+  <title>Songfy</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/icon-192.png">
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ============ Sidebar ============ -->
+  <aside class="sidebar">
+    <nav class="card nav">
+      <div class="brand">
+        <span class="brand-logo"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="16"/><path d="M9 19c2-3 4-3 6 0s4 3 6 0M9 13c2-3 4-3 6 0s4 3 6 0"/></svg></span>
+        <span class="brand-name">Songfy</span>
+      </div>
+      <a class="nav-item" data-view="home" href="#home"><svg viewBox="0 0 24 24"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg><span>Beranda</span></a>
+      <a class="nav-item" data-view="search" href="#search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.06l4.74 4.74-1.4 1.4-4.74-4.74A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg><span>Cari</span></a>
+      <a class="nav-item" data-view="settings" href="#settings"><svg viewBox="0 0 24 24"><path d="m13.6 2 .5 2.6a8 8 0 0 1 1.8 1l2.5-.9 1.6 2.8-2 1.7a8 8 0 0 1 0 2l2 1.7-1.6 2.8-2.5-.9a8 8 0 0 1-1.8 1l-.5 2.6h-3.2l-.5-2.6a8 8 0 0 1-1.8-1l-2.5.9-1.6-2.8 2-1.7a8 8 0 0 1 0-2l-2-1.7 1.6-2.8 2.5.9a8 8 0 0 1 1.8-1l.5-2.6zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span>Pengaturan</span></a>
+    </nav>
+
+    <section class="card library-card">
+      <header class="library-head">
+        <a class="nav-item" data-view="library" href="#library"><svg viewBox="0 0 24 24"><path d="M3 21V3h2v18zm5 0V3h2v18zm5.2 0-1.9-.6L17.1 3l1.9.6z"/></svg><span>Pustaka Anda</span></a>
+        <button class="icon-btn add-btn" id="libAdd" title="Buat playlist, impor, atau unggah"><svg viewBox="0 0 24 24"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/></svg></button>
+      </header>
+      <div class="lib-list" id="sideLibrary"></div>
+    </section>
+  </aside>
+
+  <!-- ============ Main ============ -->
+  <main class="main card" id="main">
+    <div class="topbar" id="topbar">
+      <div class="nav-arrows">
+        <button class="round-btn" id="backBtn" title="Kembali"><svg viewBox="0 0 24 24"><path d="m15.5 4-8 8 8 8 1.4-1.4L10.3 12l6.6-6.6z"/></svg></button>
+        <button class="round-btn" id="fwdBtn" title="Maju"><svg viewBox="0 0 24 24"><path d="m8.5 4 8 8-8 8-1.4-1.4 6.6-6.6-6.6-6.6z"/></svg></button>
+      </div>
+      <form class="search-box" id="searchForm" autocomplete="off">
+        <svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.06l4.74 4.74-1.4 1.4-4.74-4.74A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
+        <input id="searchInput" type="search" placeholder="Apa yang ingin kamu putar?">
+        <kbd class="kbd" title="Buka palet perintah">Ctrl K</kbd>
+      </form>
+      <div class="topbar-spacer"></div>
+    </div>
+    <div class="view" id="view"></div>
+  </main>
+
+  <!-- ============ Right panel ============ -->
+  <aside class="rightpanel card" id="rightPanel">
+    <header class="rp-head">
+      <div class="rp-tabs">
+        <button class="rp-tab active" data-tab="now">Sedang Diputar</button>
+        <button class="rp-tab" data-tab="lyrics">Lirik</button>
+        <button class="rp-tab" data-tab="queue">Antrean</button>
+      </div>
+      <button class="icon-btn" id="closePanel" title="Tutup"><svg viewBox="0 0 24 24"><path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6l5.6-5.6L5 6.4z"/></svg></button>
+    </header>
+    <div class="rp-body" id="rpBody"></div>
+  </aside>
+
+  <!-- ============ Player bar ============ -->
+  <footer class="player">
+    <div class="pl-now">
+      <div class="pl-cover" id="plCover" title="Layar penuh"></div>
+      <div class="pl-meta">
+        <div class="pl-title" id="plTitle">Belum ada lagu</div>
+        <div class="pl-artist" id="plArtist">Cari lagu untuk mulai memutar</div>
+        <div class="pl-quality" id="plQuality" hidden></div>
+      </div>
+      <button class="icon-btn like-btn" id="plLike" title="Simpan ke Lagu Disukai" hidden></button>
+      <button class="icon-btn" id="plDownload" title="Unduh ke pustaka" hidden></button>
+    </div>
+    <div class="pl-center">
+      <div class="pl-controls">
+        <button class="icon-btn" id="shuffleBtn" title="Acak"><svg viewBox="0 0 24 24"><path d="M17 3l4 4-4 4V8h-2.1l-3 4 3 4H17v-3l4 4-4 4v-3h-3.1l-3.4-4.6L7.1 18H3v-2h3.1l3.9-5.2L6.1 6H3V4h4.1l3.4 4.6L13.9 4H17z"/></svg></button>
+        <button class="icon-btn" id="prevBtn" title="Sebelumnya"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zm3.5 7L19 5v14z"/></svg></button>
+        <button class="play-btn" id="playBtn" title="Putar"><svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg></button>
+        <button class="icon-btn" id="nextBtn" title="Berikutnya"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM5 5l9.5 7L5 19z"/></svg></button>
+        <button class="icon-btn" id="repeatBtn" title="Ulangi"><svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2z"/></svg><span class="repeat-one" id="repeatOne">1</span></button>
+      </div>
+      <div class="pl-progress">
+        <span class="time" id="curTime">0:00</span>
+        <div class="slider" id="seek"><div class="slider-fill" id="seekFill"></div><div class="slider-knob"></div></div>
+        <span class="time" id="durTime">0:00</span>
+      </div>
+    </div>
+    <div class="pl-right">
+      <button class="icon-btn" id="lyricsBtn" title="Lirik"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7.2L4 19.2zm2 2v8.4l.4-.4H18V6zm2 2h8v2H8zm0 3h5v2H8z"/></svg></button>
+      <button class="icon-btn" id="queueBtn" title="Antrean"><svg viewBox="0 0 24 24"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h8v2H3zm11 0 7 4-7 4z"/></svg></button>
+      <button class="icon-btn" id="eqBtn" title="Equalizer"><svg viewBox="0 0 24 24"><path d="M5 3h2v6h2v2H3V9h2zm0 10h2v8H5zm6-10h2v12h2v2H9v-2h2zm0 16h2v2h-2zm6-16h2v2h2v2h-6V5h2zm0 6h2v12h-2z"/></svg></button>
+      <button class="icon-btn" id="muteBtn" title="Bisukan"><svg viewBox="0 0 24 24" id="volIcon"><path d="M3 9h4l5-5v16l-5-5H3zm11.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg></button>
+      <div class="slider vol" id="vol"><div class="slider-fill" id="volFill"></div><div class="slider-knob"></div></div>
+      <button class="icon-btn" id="fullBtn" title="Layar penuh (F)"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg></button>
+    </div>
+  </footer>
+
+  <!-- ============ Tab bawah (HP) ============ -->
+  <nav class="tabbar" id="tabbar">
+    <a data-view="home" href="#home"><svg viewBox="0 0 24 24"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg><span>Beranda</span></a>
+    <a data-view="search" href="#search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.06l4.74 4.74-1.4 1.4-4.74-4.74A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg><span>Cari</span></a>
+    <a data-view="collection" href="#collection"><svg viewBox="0 0 24 24"><path d="M3 21V3h2v18zm5 0V3h2v18zm5.2 0-1.9-.6L17.1 3l1.9.6z"/></svg><span>Pustaka</span></a>
+    <a data-view="settings" href="#settings"><svg viewBox="0 0 24 24"><path d="m13.6 2 .5 2.6a8 8 0 0 1 1.8 1l2.5-.9 1.6 2.8-2 1.7a8 8 0 0 1 0 2l2 1.7-1.6 2.8-2.5-.9a8 8 0 0 1-1.8 1l-.5 2.6h-3.2l-.5-2.6a8 8 0 0 1-1.8-1l-2.5.9-1.6-2.8 2-1.7a8 8 0 0 1 0-2l-2-1.7 1.6-2.8 2.5.9a8 8 0 0 1 1.8-1l.5-2.6zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span>Pengaturan</span></a>
+  </nav>
+</div>
+
+<!-- ============ Layar penuh / karaoke ============ -->
+<section class="karaoke" id="karaoke" hidden>
+  <div class="k-bg" id="kBg"></div>
+  <button class="icon-btn k-close" id="kClose" title="Tutup (Esc)"><svg viewBox="0 0 24 24"><path d="M4 14h6v6H8v-4H4zm10 0h6v2h-4v4h-2zM8 4h2v6H4V8h4zm6 0h2v4h4v2h-6z"/></svg></button>
+  <div class="k-inner">
+    <div class="k-left">
+      <div class="k-cover" id="kCover"></div>
+      <div class="k-title" id="kTitle"></div>
+      <div class="k-artist" id="kArtist"></div>
+      <div class="pl-quality k-quality" id="kQuality"></div>
+    </div>
+    <div class="k-right" id="kLyricsBox"></div>
+  </div>
+  <canvas class="k-vis" id="kVis"></canvas>
+</section>
+
+<div class="menu" id="menu" hidden></div>
+<div class="modal-wrap" id="modal" hidden></div>
+<div class="dropzone" id="dropzone" hidden><div><svg viewBox="0 0 24 24"><path d="M11 16V7.8L7.4 11.4 6 10l6-6 6 6-1.4 1.4L13 7.8V16zm-6 3h14v2H5z"/></svg><p>Lepaskan file musik untuk ditambahkan ke pustaka</p></div></div>
+<input type="file" id="fileInput" accept="audio/*,.flac,.m4a,.mp3,.ogg,.opus,.wav" multiple hidden>
+<div class="toasts" id="toasts"></div>
+<audio id="audio" preload="auto"></audio>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.gradle/
+.kotlin/
+build/
+app/build/
+.idea/
+*.iml
+local.properties
+captures/
+*.apk
+*.aab
+
+# kunci tanda tangan pribadi & log build
+keystore/
+build.log
